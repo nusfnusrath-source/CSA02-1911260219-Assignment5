@@ -1,0 +1,46 @@
+ A4 – Design Dynamic Memory Use
+
+A4.1 – Growable Donor List
+
+```text
+IF size == capacity THEN
+    newCapacity = capacity * 2
+    IF capacity == 0 THEN
+        newCapacity = 2
+    END IF
+
+    p = realloc(data, newCapacity * sizeof(Donor))
+
+    IF p == NULL THEN
+        RETURN FAILURE
+    END IF
+
+    data = p
+    capacity = newCapacity
+END IF
+
+data[size] = donor
+size = size + 1
+RETURN SUCCESS
+```
+
+The list starts with a small capacity and doubles whenever it becomes full. `realloc()` increases memory dynamically.
+
+### A4.2 – Memory Errors
+
+* Memory leak: Allocated memory is not freed. Prevented by calling `free()` when the list is no longer needed.
+
+* Dangling pointer: A pointer refers to freed memory. Prevented by setting the pointer to `NULL` after freeing.
+
+* Double free: The same memory is freed twice. Prevented by freeing memory only once.
+
+### Alternative Concept and Complexity Analysis
+
+If the capacity increases by 10 records each time, the array will grow slowly. It needs more `realloc()` calls and copying.
+
+| Method          | Total copying | Unused space       |
+| --------------- | ------------- | ------------------ |
+| Double capacity | O(n)          | Less than capacity |
+| Increase by 10  | O(n²)         | Maximum 9 records  |
+
+Doubling capacity is faster for large donor lists because it reduces the number of memory reallocations.
