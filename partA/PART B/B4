@@ -1,0 +1,13 @@
+### B4 – Final Engineering Decision
+
+### B4.1 – Dynamic Memory
+
+Dynamic memory allocation is suitable for donor lists because the number of donors can change. `realloc()` allows the list to grow when needed.
+
+### B4.2 – File Storage
+
+Text files are best for donor details because they are easy to read. Binary files are better for blood stock because they allow faster direct updates.
+
+### B4.3 – Final Choice
+
+I choose dynamic memory allocation, binary stock storage, and text donor storage because they provide good performance, flexibility, and easy maintenance.
