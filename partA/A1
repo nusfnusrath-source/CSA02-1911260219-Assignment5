@@ -1,0 +1,124 @@
+PART A – DESIGN & PSEUDOCODE
+TASK A1 – DECOMPOSE THE PROGRAM INTO FUNCTIONS (7 Marks)
+A1.1 – Identify the Functions (2 Marks)
+Aim: To divide the Blood Bank Management System into smaller functions so that the program is modular, easy to maintain, test and reuse.
+Functions of the Blood Bank System
+Function Purpose
+registerDonor() Registers a new donor and stores donor details.
+checkEligibility() Checks whether a donor is eligible for donation.
+findDonors() Finds eligible donors belonging to a required blood group.
+findYoungestEligible() Finds the youngest eligible donor.
+updateStock() Updates the blood stock after donation or issue.
+saveDonors() Saves donor details into a file.
+loadDonors() Loads donor details from a file.
+saveStock() Stores blood stock information into a file.
+loadStock() Reads blood stock information from a file.
+displayDonors() Displays donor details.
+
+Structure Chart
+BLOOD BANK MANAGEMENT SYSTEM
+                           |
+       --------------------------------------------
+       |               |              |           |
+   Donor Module   Stock Module   File Module   Display
+       |               |              |           |
+  ------------      ----------    ------------   ---------
+  |     |    |      |        |    |          |   Display
+Register Check Find Update  Issue Save    Load  Donors
+ Donor Eligible Donors Stock Stock Donors  Donors
+
+ The main program controls the overall blood bank system. It calls different functions based on the user's choice. Donor-related functions handle registration, eligibility checking and searching. Stock-related functions update and issue blood units. File functions save and load donor and stock information. This modular design reduces code duplication and improves maintainability.
+ 
+ A1.2 – Design the Interfaces 
+Aim: To define function prototypes and choose suitable parameter passing methods using values, pointers and const.
+
+DATA STRUCTURE
+typedef struct {
+    int donorID;
+    char name[50];
+    char bloodGroup[4];
+    int age;
+    char phone[15];
+    char lastDonationDate[11];
+} Donor;
+
+typedef struct {
+    char bloodGroup[4];
+    int units;
+} Stock;
+
+FUNCTION PROTOTYPE
+void registerDonor(Donor *d);
+
+int checkEligibility(const Donor *d);
+
+int findDonors(const Donor donors[], int count,
+               const char *bloodGroup);
+
+int findYoungestEligible(const Donor donors[], int count,
+                        const char *bloodGroup, int *youngestID);
+
+void updateStock(Stock *s, int units);
+
+void saveDonors(const Donor donors[], int count);
+
+void loadDonors(Donor donors[], int *count);
+
+void saveStock(const Stock stocks[], int count);
+
+void loadStock(Stock stocks[], int *count);
+
+void displayDonors(const Donor donors[], int count);
+
+void registerDonor(Donor *d);
+
+int checkEligibility(const Donor *d);
+
+int findDonors(const Donor donors[], int count,
+               const char *bloodGroup);
+
+int findYoungestEligible(const Donor donors[], int count,
+                        const char *bloodGroup, int *youngestID);
+
+void updateStock(Stock *s, int units);
+
+void saveDonors(const Donor donors[], int count);
+
+void loadDonors(Donor donors[], int *count);
+
+void saveStock(const Stock stocks[], int count);
+
+void loadStock(Stock stocks[], int *count);
+
+void displayDonors(const Donor donors[], int count);
+
+updateStock(Stock *s, int units) Pointer and value Stock must be modified; units is only an input value.
+saveDonors(const Donor donors[], int count) Const array and value Donor records are read-only while saving to a file.
+.
+loadStock(Stock stocks[], int *count) Array and pointer Stock data and its record count are updated during loading.
+displayDonors(const Donor donors[], int count) Const array and value Data is only displayed, not modified.
+Conclusion:
+Passing pointers avoids unnecessary structure copying and allows functions to modify the original data. Using const prevents accidental modification of input data. Passing simple values such as integers by value is efficient and safe.
+
+Conclusion:
+Passing pointers avoids unnecessary structure copying and allows functions to modify the original data. Using const prevents accidental modification of input data. Passing simple values such as integers by value is efficient and safe.
+A1.3 – Return More Than One Value (2 Marks)
+Aim: To return both the number of eligible donors and the ID of the youngest eligible donor.
+Alternative 1: Using Pointer Parameters
+In this method, the function returns the number of eligible donors and uses a pointer parameter to return the youngest donor's ID.
+
+int youngestID;
+int count = findYoungestEligible(donors, n, "O+", &youngestID);
+
+printf("Eligible donors: %d\n", count);
+printf("Youngest donor ID: %d\n", youngestID);
+
+Comparison of the Two Alternatives
+Feature Pointer Parameters Structure Return
+Number of values returned Return value + pointer Multiple fields in structure
+Readability Requires understanding pointers Easy to understand
+Safety Caller must provide a valid pointer No output pointer needed
+Extensibility More output pointers may be needed Easy to add more result fields
+Best use Simple functions with few outputs Functions with multiple related outputs
+Conclusion: Returning a structure is preferred when a function must return multiple related values because it improves readability, maintainability and extensibility.
+
