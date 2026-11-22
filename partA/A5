@@ -1,0 +1,45 @@
+ A5 – Design the File Storage
+A5.1 – Text or Binary?
+
+* Donor file – Text format: Donor records are stored one per line using `fprintf()`. Text files are easy to read, edit and debug.
+
+* Stock file – Binary format: Stock records are stored using `fwrite()`. Binary files are compact and faster to read and write.
+
+### A5.2 – Update in Place
+
+```text
+OPEN stock file in read/write binary mode
+IF file open fails
+    RETURN FAILURE
+END IF
+
+SEEK to the required record
+READ the stock record using fread()
+
+IF read fails
+    RETURN FAILURE
+END IF
+
+UPDATE the units
+
+SEEK back to the same record
+WRITE using fwrite()
+
+CLOSE file
+RETURN SUCCESS
+```
+
+Binary files allow direct access to records using `fseek()`, `fread()` and `fwrite()` without rewriting the entire file.
+
+### Alternative Concept and Complexity Analysis
+
+If stock is stored in a text file, the entire file must be read and rewritten to update a record.
+
+| Method                 | Update time | File size                      |
+| ---------------------- | ----------- | ------------------------------ |
+| Binary in-place update | O(1)        | Compact, fixed-size records    |
+| Text file rewrite      | O(n)        | Usually larger, human-readable |
+
+Binary storage is efficient for frequent stock updates, while text storage is easier for humans to read and edit.
+
+Next, we can start Part B – Implementation, beginning with B1.
