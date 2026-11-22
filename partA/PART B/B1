@@ -1,0 +1,158 @@
+
+
+ B1 – Implement and Instrument the Recursive Functions
+ B1.1 – Validate the Implementation (2 Marks)
+
+Test cases and their purpose:
+
+| Test         | Input | Expected output | Purpose                    |
+| ------------ | ----- | --------------- | -------------------------- |
+| Digital root | 9875  | 2               | Checks digit sum recursion |
+| Digital root | 0     | 0               | Checks zero input          |
+| Power        | 2, 5  | 32              | Checks normal input        |
+| Power        | 5, 0  | 1               | Checks zero exponent       |
+| Power        | 7, 1  | 7               | Checks exponent one        |
+
+Explanation:
+
+These tests verify that the recursive functions work correctly for normal values, zero, one, and different inputs. They also check whether the base cases work correctly.
+
+### B1.2 – Compare with Your Design (1 Mark)
+
+The implemented code follows the pseudocode designed in Part A. The base cases and recursive steps are the same. No major changes were required. The functions work as expected.
+
+### B1.3 – Count the Calls (2 Marks)
+
+| n      | Linear power calls | Halving power calls |
+| ------ | ------------------ | ------------------- |
+| 10     | 11                 | 5*                  |
+| 100    | 101                | 8*                  |
+| 1,000  | 1,001              | 11*                 |
+| 10,000 | 10,001             | 15*                 |
+
+\*Halving-call counts are for a recursive implementation that stops when n reaches 0 and uses integer division n/2. Verify these counts using your program before submission.
+
+Linear recursion has calls, while halving recursion has calls. Halving recursion is much faster for large values.
+
+### B1.4 – Find the Limit (2 Marks)
+
+Linear recursion creates many function calls and uses more stack memory. For very large values of n, it may crash due to stack overflow.
+
+The iterative version uses a loop instead of recursive calls. It uses less stack memory and can handle larger values.
+
+CODE:
+
+#include <stdio.h>
+
+long long calls = 0;
+
+int digitalRoot(int n)
+{
+    if (n < 10)
+        return n;
+
+    int sum = 0;
+    while (n > 0)
+    {
+        sum += n % 10;
+        n /= 10;
+    }
+
+    return digitalRoot(sum);
+}
+
+long long power_linear(long long base, int exp)
+{
+    calls++;
+
+    if (exp == 0)
+        return 1;
+
+    return base * power_linear(base, exp - 1);
+}
+
+long long power_fast(long long base, int exp)
+{
+    calls++;
+
+    if (exp == 0)
+        return 1;
+
+    long long half = power_fast(base, exp / 2);
+
+    if (exp % 2 == 0)
+        return half * half;
+    else
+        return base * half * half;
+}
+
+int main(void)
+{
+    printf("Digital root of 9875 = %d\n", digitalRoot(9875));
+    printf("Digital root of 0 = %d\n", digitalRoot(0));
+
+    calls = 0;
+    long long a = power_linear(2, 30);
+    printf("Linear: %lld in %lld calls\n", a, calls);
+
+    calls = 0;
+    long long b = power_fast(2, 30);
+    printf("Fast: %lld in %lld calls\n", b, calls);
+
+    return 0;
+}
+
+OUTPUT:
+Digital root of 9875 = 2
+Digital root of 0 = 0
+Linear: 1073741824 in 31 calls
+Fast: 1073741824 in 6 calls
+
+
+B1.3 – Call Count Experiment
+Aim
+To compare the number of recursive calls made by linear power and fast power for different values of n.
+C code
+Add this experiment to your B1.c program (or replace the previous main() with this one).
+
+int main(void)
+{
+    int values[] = {10, 100, 1000, 10000};
+    int count = 4;
+
+    for (int i = 0; i < count; i++)
+    {
+        int n = values[i];
+
+        calls = 0;
+        power_linear(1, n);
+        long long linearCalls = calls;
+
+        calls = 0;
+        power_fast(1, n);
+        long long fastCalls = calls;
+
+        printf("n = %d\n", n);
+        printf("Linear calls = %lld\n", linearCalls);
+        printf("Fast calls = %lld\n\n", fastCalls);
+    }
+
+    return 0;
+}
+
+Expected call counts
+n Linear calls Fast calls
+10 11 5
+100 101 8
+1000 1001 11
+10000 10001 15
+Conclusion
+Linear power makes n + 1 recursive calls, so its time complexity is O(n). Fast power divides the exponent by 2 in every recursive call, so its time complexity is O(log n). Fast power is more efficient for large exponents.
+
+### B1.4 – Recursion Limit Test
+
+Linear recursion uses more function calls as `n` increases. For large values, it may cause a stack overflow.
+
+Fast recursion uses fewer calls and is more efficient.
+
+Conclusion: Iterative methods are safer for very large inputs because they use less stack memory.
