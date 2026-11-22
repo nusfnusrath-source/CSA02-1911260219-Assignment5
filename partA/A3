@@ -1,0 +1,82 @@
+ TASK A3 – DESIGN WITH POINTERS (5 Marks)
+
+ A3.1 – Pointer Operations (2 Marks)
+
+Given:
+
+```c
+int stock[8];
+int *p = stock;
+```
+
+* `p + 3` – Points to the 4th element.
+
+* `*(p + 3)` – Value of the 4th element.
+
+* `p[3]` – Same as `*(p + 3)`.
+
+* `*p++` – Accesses the current element, then moves the pointer to the next element.
+
+Memory diagram:
+
+```text
+Array index:  0    1    2    3    4    5    6    7
+             [ ]  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]
+              ↑              ↑
+              p            p+3
+```
+
+### A3.2 – Pointers and Functions (2 Marks)
+
+```c
+int *findLowestStock(int stock[], int n)
+{
+    int *lowest = &stock[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        if (stock[i] < *lowest)
+            lowest = &stock[i];
+    }
+
+    return lowest;
+}
+```
+
+This function returns a pointer to the element with the lowest stock. The caller can update the value directly using `*ptr`.
+
+Returning a pointer to a local variable is unsafe because the local variable is destroyed when the function ends, causing a dangling pointer.
+
+### A3.3 – Command-Line Interface (1 Mark)
+
+```text
+bloodbank find O+
+bloodbank issue A- 2
+```
+
+The program uses `argc` and `argv` to read command-line arguments. It checks the argument count and blood group validity. Invalid arguments display an error message.
+
+### Alternative Concept and Complexity Analysis
+
+Returning an index instead of a pointer:
+
+```c
+int findLowestIndex(int stock[], int n)
+{
+    int index = 0;
+
+    for (int i = 1; i < n; i++)
+    {
+        if (stock[i] < stock[index])
+            index = i;
+    }
+
+    return index;
+}
+```
+
+* Time complexity: for both pointer and index methods.
+
+* Space complexity: for both.
+
+* Safety: An index is safer if an array is reallocated because the pointer may become invalid.
