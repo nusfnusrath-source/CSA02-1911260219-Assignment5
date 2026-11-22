@@ -1,0 +1,89 @@
+ TASK A2 – DESIGN WITH RECURSION (5 Marks)
+ A2.1 – Recursive Design (2 Marks)
+
+1\. Digital Root
+
+```text
+Algorithm DigitalRoot(n)
+    if n < 10
+        return n
+    sum = 0
+    while n > 0
+        sum = sum + n MOD 10
+        n = n DIV 10
+    return DigitalRoot(sum)
+End Algorithm
+```
+
+2\. Power using Recursion
+
+```text
+Algorithm Power(base, n)
+    if n = 0
+        return 1
+    half = Power(base, n DIV 2)
+    if n MOD 2 = 0
+        return half * half
+    else
+        return base * half * half
+End Algorithm
+```
+
+* Base case: , return 1.
+
+* Recursive case: Calculate power using and square the result.
+
+### A2.2 – Trace the Calls (2 Marks)
+
+1\. Digital Root – Example: 9875
+
+9875 → 9+8+7+5 = 29 29 → 2+9 = 11 11 → 1+1 = 2 Result = 2
+
+Deepest call stack:
+
+```text
+DigitalRoot(9875)
+  DigitalRoot(29)
+    DigitalRoot(11)
+      DigitalRoot(2) → returns 2
+```
+
+2\. Power – Example: 2⁸
+
+```text
+Power(2,8)
+Power(2,4)
+Power(2,2)
+Power(2,1)
+Power(2,0) → 1
+Result = 256
+```
+
+Number of calls:
+
+| Power method      | Recurrence | Time complexity |
+| ----------------- | ---------- | --------------- |
+| Linear recursion  |            |                 |
+| Halving recursion |            |                 |
+
+### A2.3 – Recursion Risks (1 Mark)
+
+If the base case is missing, recursion continues endlessly and causes stack overflow.
+
+Recursion should be replaced by a loop when the problem is simple repetition or when deep recursion consumes too much stack memory.
+
+### Alternative Concept and Complexity Analysis
+
+Digital root can be calculated using a loop or formula:
+
+```c
+1 + (n - 1) % 9
+```
+
+* Recursive method: time and stack space, where is the number of digits.
+
+* Loop method: time and space.
+
+* Formula method: time and space.
+
+The loop avoids recursive stack usage and is safer for large inputs.
