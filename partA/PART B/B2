@@ -1,0 +1,21 @@
+B2 – Adversarial Inputs and Safety
+
+ B2.1 – Long Donor Name
+
+Using `scanf("%s", name)` may cause buffer overflow if the donor name is too long. Using `fgets()` is safer because it limits the input size.
+
+### B2.2 – Missing File
+
+If the file cannot be opened, `fopen()` returns `NULL`. We should check this and use `perror()` to display the error message.
+
+### B2.3 – Invalid Command-Line Arguments
+
+Check the number of arguments using `argc` before accessing `argv`. If the arguments are incorrect, display a usage message.
+
+### B2.4 – Memory Safety
+
+Use Valgrind or AddressSanitizer to detect memory leaks, invalid memory access, and memory errors. Free dynamically allocated memory after use.
+
+### B2.5 – Alternative
+
+Using `getline()` allows reading long input dynamically. It reduces buffer overflow risks and is suitable for variable-length donor names.
