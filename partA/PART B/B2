@@ -19,3 +19,34 @@ Use Valgrind or AddressSanitizer to detect memory leaks, invalid memory access, 
 ### B2.5 – Alternative
 
 Using `getline()` allows reading long input dynamically. It reduces buffer overflow risks and is suitable for variable-length donor names.
+
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[])
+{
+    char name[50];
+
+    if (argc != 2)
+    {
+        printf("Usage: ./B2 <filename>\n");
+        return 1;
+    }
+
+    FILE *fp = fopen(argv[1], "r");
+
+    if (fp == NULL)
+    {
+        perror("File error");
+        return 1;
+    }
+
+    printf("File opened successfully.\n");
+    fclose(fp);
+
+    printf("Enter donor name: ");
+    fgets(name, sizeof(name), stdin);
+
+    printf("Name: %s", name);
+    return 0;
+}
